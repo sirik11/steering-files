@@ -2,7 +2,7 @@
 
 *Every coding agent now reads a steering file before it touches your code. The research says most of what we put in them doesn't help, and makes every task cost more.*
 
-![Cover image reading "Write what the model can't guess" over a steering file in which most lines are faded and a few are highlighted in amber.](../figures/cover-write-what-the-model-cant-guess.png)
+![Cover image reading "Write what the model can't guess" beside a printed AGENTS.md marked up in red pen: the project structure, tech stack, and architecture lines are struck through with a note that the agent can already read this, and three conventions are highlighted and bracketed with the note keep only these.](../figures/cover-write-what-the-model-cant-guess.png)
 
 Open almost any active repository in 2026 and you'll find one: a markdown file that tells the coding agent how to behave. Kiro calls them [steering files](https://kiro.dev/docs/steering/). Claude Code reads a [CLAUDE.md](https://code.claude.com/docs/en/memory). Cursor has [project rules](https://cursor.com/docs/context/rules), Copilot has [repository custom instructions](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions), and the cross-tool format [AGENTS.md is used by over 60,000 open-source projects](https://agents.md/).
 
@@ -72,7 +72,7 @@ Run every line through four questions, in order.
 
 Remember that the model weighs a steering file; nothing enforces it. That's fine for style. It is not fine for "never run migrations against production" or "never commit credentials."
 
-![Spectrum from model decides to system enforces. Always-on steering, scoped rules, and on-demand skills sit on the context side, where the model weighs the instruction and can ignore it. Hooks, permission rules, and CI checks sit on the enforcement side, where the instruction holds regardless of what the model decides. A banner reads: put preferences in steering, put must-nevers in enforcement.](../figures/fig4-suggestion-vs-guarantee.png)
+![Two panels. On the left, a steering file drawn as a sticky note reading please use pnpm, not npm, and money is integer cents: the model reads it, weighs it, and decides. This covers CLAUDE.md, AGENTS.md, .kiro/steering, scoped rules, skills, and mentions. On the right, a hook drawn as a padlock labeled no migrations against production: it runs no matter what the model decides, as a PreToolUse hook, permission deny rule, or CI check. Caption: preferences go on the note, must-nevers go behind the lock.](../figures/fig4-suggestion-vs-guarantee.png)
 
 For anything that must hold, use a mechanism that doesn't depend on the model's judgment. Claude Code's documentation is direct: to block an action regardless of what Claude decides, use a [hook](https://code.claude.com/docs/en/memory), which runs as a shell command at fixed points in the session. Permission rules and CI checks work the same way.
 

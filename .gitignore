@@ -7,3 +7,4 @@ venv/
 .idea/
 .vscode/
 preview.html
+node_modules/
