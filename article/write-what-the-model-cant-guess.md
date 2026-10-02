@@ -72,7 +72,7 @@ Run every line through four questions, in order.
 
 Remember that the model weighs a steering file; nothing enforces it. That's fine for style. It is not fine for "never run migrations against production" or "never commit credentials."
 
-![Two panels. On the left, a steering file drawn as a sticky note reading please use pnpm, not npm, and money is integer cents: the model reads it, weighs it, and decides. This covers CLAUDE.md, AGENTS.md, .kiro/steering, scoped rules, skills, and mentions. On the right, a hook drawn as a padlock labeled no migrations against production: it runs no matter what the model decides, as a PreToolUse hook, permission deny rule, or CI check. Caption: preferences go on the note, must-nevers go behind the lock.](../figures/fig4-suggestion-vs-guarantee.png)
+![Two panels. On the left, a steering file drawn as a sticky note reading please use pnpm, not npm, and money is integer cents: the model reads it, weighs it, and decides. This covers CLAUDE.md, AGENTS.md, .kiro/steering, scoped rules, skills, and mentions. On the right, a hook drawn as a padlock labeled no migrations against production: it runs no matter what the model decides, as a PreToolUse hook, permission deny rule, or CI check. Preferences go on the note; must-nevers go behind the lock.](../figures/fig4-suggestion-vs-guarantee.png)
 
 For anything that must hold, use a mechanism that doesn't depend on the model's judgment. Claude Code's documentation is direct: to block an action regardless of what Claude decides, use a [hook](https://code.claude.com/docs/en/memory), which runs as a shell command at fixed points in the session. Permission rules and CI checks work the same way.
 
