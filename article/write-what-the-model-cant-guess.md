@@ -115,6 +115,8 @@ Your agent already knows how to write code. What it doesn't know is how *your te
 
 Write what the model can't guess.
 
+*The linter, the example steering file, and every figure in this piece are open source on GitHub: [sirik11/steering-files](https://github.com/sirik11/steering-files).*
+
 ## Sources
 
 - [Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?](https://arxiv.org/abs/2602.11988), Gloaguen et al., ETH Zurich and LogicStar.ai, February 2026
