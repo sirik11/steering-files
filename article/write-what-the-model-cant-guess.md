@@ -86,6 +86,8 @@ Then measure it. The ETH paper's closing line is the most useful advice in this 
 
 I wrote a small, dependency-free [linter that flags the patterns above](https://github.com/sirik11/steering-files): overview content the agent can derive, missing security and performance guidance, unscoped rules, likely secrets, and the context each file costs on every task. When I ran it against steering files from a few large open-source projects, the biggest was 527 lines, its first section was a codebase overview with a directory tree, and it put roughly 7,000 tokens into the context of every task before the agent read a line of code. The linter is a starting point for review, not a substitute for the measurement.
 
+![Terminal output of the steering linter on a demo repository. A scoped Kiro steering file, about 37 tokens, has nothing flagged. A root AGENTS.md, about 292 tokens loaded on every task, is flagged for overview content the agent can read from the code, no security or performance guidance, 74 unscoped lines, and a must-never rule that belongs in a hook or permission rule.](../figures/linter-output.png)
+
 ## The filename was never the point
 
 We've spent a year arguing over which file to use. The research suggests that was the wrong argument. AGENTS.md, CLAUDE.md, and `.kiro/steering/` all work the same way: they help when they carry what the model can't infer, and they cost you when they carry what it can.
