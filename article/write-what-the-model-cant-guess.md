@@ -20,6 +20,10 @@ Underneath the branding, the tools now offer the same dials: instructions that l
 
 One line in [Anthropic's documentation](https://code.claude.com/docs/en/memory) is worth reading slowly, because it holds for every tool: Claude treats these files "as context, not enforced configuration." A steering file is something the model reads and weighs. It is not a rule the system enforces. Hold onto that; it decides what belongs in the file.
 
+If you want to see the mechanics before the research, AWS has a short video on steering in Kiro:
+
+[Kiro Steering: Consistent Agent Behavior Across Every Task](https://www.youtube.com/watch?v=3qGIYFnTYnM) (Amazon Web Services, YouTube)
+
 ## Do steering files actually make agents better?
 
 Nobody had tested this rigorously until February, when researchers at [ETH Zurich and LogicStar.ai](https://arxiv.org/abs/2602.11988) ran coding agents with and without context files, on SWE-bench tasks and on a new set of issues from repositories that already had developer-written AGENTS.md files.
@@ -67,6 +71,21 @@ Run every line through four questions, in order.
 **Does it only apply to part of the codebase?** Scope it. This is where Kiro's `fileMatch` mode earns its place: a rule about your API error format should load when the agent touches `api/**`, not when it edits a README. Every major tool now supports some form of scoping. Most steering files I see don't use it.
 
 **Otherwise, keep it.** What survives is the short list of conventions that differ from the default: "money is integer cents, never floats," "use pnpm, not npm," "the payments client is only called from `billing/`." These are the lines that change an agent's output, because nothing in the code would have told it.
+
+Put together, a steering file that survives all four questions is short. Here is one for an API, scoped with Kiro’s `fileMatch` so it loads only when the agent touches `api/**`:
+
+```yaml
+---
+inclusion: fileMatch
+fileMatchPattern: "api/**"
+---
+# API conventions
+- Errors return {"error": {"code", "message"}}, never a bare string.
+- Money fields are integer cents and end in _cents.
+- Take the user ID from the auth token, not the request body.
+- List endpoints paginate; the page size caps at 100.
+- Every new endpoint gets a contract test in tests/contract/.
+```
 
 ## When is a steering file the wrong tool?
 
