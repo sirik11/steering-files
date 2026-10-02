@@ -341,7 +341,51 @@ def social():
     return svg(1200, 630, cover_body(), defs=COVER_DEFS, bg=None, viewbox="0 30 1600 840")
 
 
+# ---------------------------------------------------------------- terminal card (README)
+TERMINAL_RUN = [  # real output of `steering_lint.py` on a demo repo (see README)
+    ("prompt", "$ python3 steering_lint.py ."),
+    ("", ""),
+    ("file", ".kiro/steering/api.md  (~37 tokens, scoped)"),
+    ("ok", "nothing flagged"),
+    ("", ""),
+    ("file", "AGENTS.md  (~292 tokens, loads every task)"),
+    ("derivable", "overview content on lines 3, 5, 6, 7, 9: the agent can read this from the code"),
+    ("guardrails", "no security guidance (found in only 14.8% of files studied)"),
+    ("guardrails", "no performance guidance (found in only 14.5% of files studied)"),
+    ("scope", "74 lines load on every task; scope rules that apply to part of the codebase"),
+    ("enforce", "line 14: a must-never; a hook or permission rule enforces it, steering only suggests it"),
+    ("", ""),
+    ("summary", "~292 tokens of steering load on every task (chars / 4 estimate)."),
+]
+KIND_COLOR = {"ok": "#3ACBD5", "derivable": "#E8846B", "guardrails": "#F5AE45",
+              "scope": "#3ACBD5", "enforce": "#F5AE45"}
+
+
+def terminal():
+    b = ['<rect width="1600" height="680" fill="#FFFFFF"/>']
+    b.append(r(40, 40, 1520, 600, "#0B2233", "#1F4257", 1.5, rx=16))
+    b.append(r(40, 40, 1520, 54, "#0F2C40", rx=16))
+    b.append('<rect x="40" y="78" width="1520" height="16" fill="#0F2C40"/>')
+    for k, c in enumerate(("#B14B33", "#C97A1E", "#3ACBD5")):
+        b.append(f'<circle cx="{72 + k * 24}" cy="67" r="7" fill="{c}" opacity="0.85"/>')
+    b.append(t(800, 74, "steering_lint", 17, "#7A98AB", anchor="middle", font=M))
+    y, ch = 150, 13.2
+    for kind, msg in TERMINAL_RUN:
+        if kind == "prompt":
+            b.append(t(92, y, msg, 22, "#3ACBD5", "bold", font=M))
+        elif kind in ("file", "summary"):
+            b.append(t(92, y, msg, 22, "#E8EEF2" if kind == "file" else "#B9CEDC",
+                       "bold" if kind == "file" else "normal", font=M))
+        elif kind:
+            b.append(t(92 + 2 * ch, y, kind, 22, KIND_COLOR[kind], "bold", font=M))
+            b.append(t(92 + 13 * ch, y, msg, 22, "#B9CEDC", font=M))
+        y += 38
+    return svg(1600, 680, "".join(b), bg=None)
+
+
 if __name__ == "__main__":
+    (OUT / "linter-output.svg").write_text(terminal())
+    print("wrote linter-output")
     for name, fn in (("fig1-same-four-dials", fig1), ("fig2-what-we-write", fig2),
                      ("fig3-four-questions", fig3), ("fig4-suggestion-vs-guarantee", fig4),
                      ("cover-write-what-the-model-cant-guess", cover),
